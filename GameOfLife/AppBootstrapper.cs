@@ -3,6 +3,8 @@ namespace GameOfLife
 	using System;
 	using System.Collections.Generic;
 	using Caliburn.Micro;
+	using GameOfLife.ViewModels;
+	using GameOfLife.Models;
 
 	public class AppBootstrapper : BootstrapperBase
 	{
@@ -19,6 +21,7 @@ namespace GameOfLife
 
 			container.Singleton<IWindowManager, WindowManager>();
 			container.Singleton<IEventAggregator, EventAggregator>();
+			container.PerRequest<IScreen, GameViewModel>();
 			container.PerRequest<IShell, ShellViewModel>();
 		}
 
