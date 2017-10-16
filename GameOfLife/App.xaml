@@ -6,8 +6,9 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary>
-					<local:AppBootstrapper x:Key="bootstrapper"></local:AppBootstrapper>
+					<local:AppBootstrapper x:Key="bootstrapper" />
 				</ResourceDictionary>
+				<ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>
