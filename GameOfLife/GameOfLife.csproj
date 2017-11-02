@@ -138,6 +138,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\play_32.png" />
+    <Resource Include="Resources\Images\play_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\stop_32.png" />
+    <Resource Include="Resources\Images\stop_64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

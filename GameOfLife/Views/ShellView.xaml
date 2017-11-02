@@ -2,18 +2,18 @@
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:Fluent="urn:fluent-ribbon"
-                     Title="Conway's Game of Life - Artur Furmanczyk [155063], RAI 2017, ETI PG" 
-                     Width="800" 
+                     Title="Conway's Game of Life - Artur Furmanczyk [155063], RAI 2017, ETI PG"
+                     Width="800"
                      Height="600">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Fluent:Ribbon Grid.Row="0">
+		<Fluent:Ribbon Grid.Row="0" CanMinimize="False">
 			<!--Backstage-->
 			<Fluent:Ribbon.Menu>
-				<Fluent:Backstage>
+				<Fluent:Backstage Header="Menu">
 					<Fluent:BackstageTabControl>
 						<Fluent:BackstageTabItem Header="New" />
 						<Fluent:BackstageTabItem Header="Print" />
@@ -23,19 +23,24 @@
 			</Fluent:Ribbon.Menu>
 
 			<!--Tabs-->
-			<Fluent:RibbonTabItem Header="Home">
-				<Fluent:RibbonGroupBox Header="Group">
-					<Fluent:Button Header="Green"
-					               Icon="Resource-Path to your small icon for this button"
-					               LargeIcon="Resource-Path to your large icon for this button" />
-					<Fluent:Button Header="Grey" 
-					               Icon="Resource-Path to your small icon for this button"
-					               LargeIcon="Resource-Path to your large icon for this button" />
+			<Fluent:RibbonTabItem Header="Gra">
+				<Fluent:RibbonGroupBox Header="Sterowanie">
+					<Fluent:Button Header="Start"
+					               Icon="\Resources\Images\play_32.png"
+					               LargeIcon="\Resources\Images\play_64.png" />
+					<Fluent:Button Header="Stop"
+					               Icon="\Resources\Images\stop_32.png"
+					               LargeIcon="\Resources\Images\stop_64.png" />
+					<Fluent:Button Header="Nastepny"
+					               Icon="\Resources\Images\stop_32.png"
+					               LargeIcon="\Resources\Images\stop_64.png" />
+					<Fluent:Button Header="Wyczysc"
+					               Icon="\Resources\Images\stop_32.png"
+					               LargeIcon="\Resources\Images\stop_64.png" />
 				</Fluent:RibbonGroupBox>
 			</Fluent:RibbonTabItem>
-			
+
 		</Fluent:Ribbon>
-		<ContentControl Grid.Row="1" x:Name="ActiveItem"></ContentControl>
+		<ContentControl Grid.Row="1" x:Name="ActiveItem" />
 	</Grid>
 </Fluent:RibbonWindow>
-

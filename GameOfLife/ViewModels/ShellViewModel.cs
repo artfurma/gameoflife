@@ -12,5 +12,6 @@ namespace GameOfLife.ViewModels
 			_windowManager = windowManager;
 			ActivateItem(new GameViewModel());
 		}
+
 	}
 }
