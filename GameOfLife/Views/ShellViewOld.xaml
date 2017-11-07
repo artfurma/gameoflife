@@ -1,4 +1,4 @@
-﻿<Fluent:RibbonWindow x:Class="GameOfLife.Views.ShellView"
+<Fluent:RibbonWindow x:Class="GameOfLife.Views.ShellView"
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:Fluent="urn:fluent-ribbon"
@@ -12,15 +12,15 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Fluent:Ribbon Grid.Row="0" CanMinimize="False">
-			<!--			Backstage-->
-			<Fluent:Ribbon.Menu>
-				<Fluent:Backstage Header="Plik">
-					<Fluent:BackstageTabControl>
-						<Fluent:Button Click="OnImportButtonClick" x:Name="Import" Header="Import" />
-						<Fluent:Button x:Name="Export" Header="Eksport" />
-					</Fluent:BackstageTabControl>
-				</Fluent:Backstage>
-			</Fluent:Ribbon.Menu>
+<!--			Backstage-->
+						<Fluent:Ribbon.Menu>
+							<Fluent:Backstage Header="Plik">
+								<Fluent:BackstageTabControl>
+									<Fluent:Button Click="OnImportButtonClick" x:Name="Import" Header="Import" />
+									<Fluent:Button x:Name="Export" Header="Eksport" />
+								</Fluent:BackstageTabControl>
+							</Fluent:Backstage>
+						</Fluent:Ribbon.Menu>
 
 			<!--Tabs-->
 			<Fluent:RibbonTabItem Header="Gra">

@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>gameoflife.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -48,6 +51,9 @@
     </Reference>
     <Reference Include="Fluent, Version=5.0.2.46, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
       <HintPath>..\packages\Fluent.Ribbon.5.0.2.46\lib\net45\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.3.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.3\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -92,7 +98,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Controls\CellControl.xaml.cs">
+      <DependentUpon>CellControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameboardContol.xaml.cs">
+      <DependentUpon>GameboardContol.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Core\GameEngine.cs" />
+    <Compile Include="Helpers\CellStateToColorConverter.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Models\Cell.cs" />
+    <Compile Include="Models\Generation.cs" />
     <Compile Include="Models\IShell.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
@@ -102,13 +120,28 @@
     <Compile Include="Views\GameView.xaml.cs">
       <DependentUpon>GameView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\CellControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameboardContol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\GameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShellView.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -139,12 +172,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\play_32.png" />
+    <Resource Include="Resources\Images\forward_32.png" />
+    <Resource Include="Resources\Images\forward_64.png" />
     <Resource Include="Resources\Images\play_64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\stop_32.png" />
+    <Resource Include="Resources\Images\reset2_32.png" />
+    <Resource Include="Resources\Images\reset2_64.png" />
+    <Resource Include="Resources\Images\reset_32.png" />
+    <Resource Include="Resources\Images\reset_64.png" />
     <Resource Include="Resources\Images\stop_64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="gameoflife.ico" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

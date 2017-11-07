@@ -8,6 +8,18 @@ namespace GameOfLife
 
 	public class AppBootstrapper : BootstrapperBase
 	{
+		static IEnumerable<System.Windows.DependencyObject> FluentRibbonChildResolver(Fluent.Ribbon ribbon)
+		{
+			foreach (var ti in ribbon.Tabs)
+			{
+				foreach (var group in ti.Groups)
+				{
+					foreach (var obj in BindingScope.GetNamedElements(group))
+						yield return obj;
+				}
+			}
+		}
+
 		SimpleContainer container;
 
 		public AppBootstrapper()
@@ -21,8 +33,12 @@ namespace GameOfLife
 
 			container.Singleton<IWindowManager, WindowManager>();
 			container.Singleton<IEventAggregator, EventAggregator>();
-			container.PerRequest<IScreen, GameViewModel>();
+			//			container.PerRequest<IScreen, GameViewModel>();
 			container.PerRequest<IShell, ShellViewModel>();
+			container.Singleton<GameViewModel>();
+
+			BindingScope.AddChildResolver<Fluent.Ribbon>(FluentRibbonChildResolver);
+
 		}
 
 		protected override object GetInstance(Type service, string key)
