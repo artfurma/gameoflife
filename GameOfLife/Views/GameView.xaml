@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="460" d:DesignWidth="800">
 	<Grid Background="White">
-		<golControls:GameboardContol x:Name="GameGrid" Rows="10" Columns="10" HorizontalAlignment="Left" Height="400" Width="780"
+		<golControls:GameboardContol x:Name="GameGrid" Rows="{Binding Path=GameRows}" Columns="{Binding Path=GameColumns}" HorizontalAlignment="Left" Height="400" Width="780"
 		      Margin="10, 10, 10, 50" VerticalAlignment="Bottom" />
 		<Label x:Name="GenerationLabel" Content="Generacja:" HorizontalAlignment="Left" Margin="10"
 		       VerticalAlignment="Bottom" />

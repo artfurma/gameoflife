@@ -21,10 +21,26 @@ namespace GameOfLife.Views
 
 		public void OnImportButtonClick(object sender, RoutedEventArgs args)
 		{
-			var openFileDialog = new OpenFileDialog {Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*"};
-			if (openFileDialog.ShowDialog() != true) return;
-			var gameMap = File.ReadAllLines(openFileDialog.FileName);
+			var dalog = new OpenFileDialog {Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*"};
+			if (dalog.ShowDialog() != true) return;
+			var gameMap = File.ReadAllLines(dalog.FileName);
 			_vm.Import(gameMap);
+		}
+
+		public void OnExportButtonClick(object sender, RoutedEventArgs args)
+		{
+			var dialog = new SaveFileDialog
+			{
+				Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*",
+				FilterIndex = 2,
+				RestoreDirectory = true
+			};
+
+			if (dialog.ShowDialog() == true)
+			{
+				var exportedMap = _vm.Export();
+				File.WriteAllText(dialog.FileName, exportedMap);
+			}
 		}
 	}
 }

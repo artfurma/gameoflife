@@ -70,7 +70,7 @@ namespace GameOfLife.ViewModels
 			StartVisibility = Visibility.Visible;
 		}
 
-		public void Import()
+		public void Import2()
 		{
 			var openFileDialog = new OpenFileDialog { Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*" };
 
@@ -80,7 +80,7 @@ namespace GameOfLife.ViewModels
 			}
 		}
 
-		public void Export()
+		public void Export2()
 		{
 			
 		}

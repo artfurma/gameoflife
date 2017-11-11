@@ -9,7 +9,7 @@
 		<Setter Property="BorderThickness" Value="0.1" />
 	</Style>
 
-	<Style x:Key="GameboardControlStyle" TargetType="Grid">
+	<Style x:Key="GameboardControlStyle" TargetType="UniformGrid">
 		<Setter Property="Background" Value="#2B3E50" />
 	</Style>
 </ResourceDictionary>

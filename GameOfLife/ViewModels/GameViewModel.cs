@@ -22,8 +22,8 @@ namespace GameOfLife.ViewModels
 		private bool _canPerformNextGeneration;
 		private bool _canUpdateCellStatus;
 		private bool _running;
-		private int _mapWidth;
-		private int _mapHeight;
+		private int _gameRows;
+		private int _gameColumns;
 
 		public int CurrentGenerationNumber
 		{
@@ -85,50 +85,53 @@ namespace GameOfLife.ViewModels
 			}
 		}
 
-		public int MapWidth
+		public int GameRows
 		{
-			get => _mapWidth;
+			get => _gameRows;
 			set
 			{
-				_mapWidth = value;
-				NotifyOfPropertyChange(() => MapWidth);
+				_gameRows = value;
+				NotifyOfPropertyChange(() => GameRows);
 			}
 		}
 
-		public int MapHeight
+		public int GameColumns
 		{
-			get => _mapHeight;
+			get => _gameColumns;
 			set
 			{
-				_mapHeight = value;
-				NotifyOfPropertyChange(() => MapHeight);
+				_gameColumns = value;
+				NotifyOfPropertyChange(() => GameColumns);
 			}
 		}
+
 		#endregion
 
 		#region Commands
 
 		public ICommand NextGenerationCommand { get; }
 		public ICommand ResetCommand { get; }
+
 		public ICommand UpdateCellStateCommand { get; }
 
 		#endregion
 
 		public GameViewModel()
 		{
-			var gameSize = 100;
-			_gameEngine = new GameEngine(gameSize);
+			//TODO: Zamienić to na binding
+			GameRows = 50;
+			GameColumns = 100;
+
+			NextGenerationCommand = new RelayCommand<object>(_ => NextGeneration(), _ => CanPerformNextGeneration);
+			ResetCommand = new RelayCommand<object>(_ => Reset(), _ => CanReset);
+			UpdateCellStateCommand = new RelayCommand<object>(UpdateCellState, _ => CanUpdateCellState);
+
+			_gameEngine = new GameEngine(new Generation(GameRows, GameColumns));
+			CurrentGenerationNumber = _gameEngine.GenerationNumber;
 
 			CanReset = true;
 			CanPerformNextGeneration = true;
 			CanUpdateCellState = true;
-			CurrentGenerationNumber = _gameEngine.GenerationNumber;
-
-
-			NextGenerationCommand = new RelayCommand<object>(_ => NextGeneration(), _ => CanPerformNextGeneration);
-			ResetCommand = new RelayCommand<object>(_ => Reset(), _ => CanReset);
-			UpdateCellStateCommand =
-				new RelayCommand<object>(UpdateCellState, _ => CanUpdateCellState);
 		}
 
 		public void NextGeneration()
@@ -160,7 +163,7 @@ namespace GameOfLife.ViewModels
 
 			while (Running)
 			{
-				await Task.Delay(50);
+				await Task.Delay(20);
 				NextGeneration();
 			}
 		}
@@ -170,14 +173,52 @@ namespace GameOfLife.ViewModels
 			Running = false;
 		}
 
+		public Generation ParseMap(int rows, int columns, string[] inputMap)
+		{
+			var resultCellMap = new Cell[rows, columns];
+			for (var row = 0; row < rows; row++)
+			{
+				for (var column = 0; column < columns; column++)
+				{
+					var cellChar = inputMap[row][column];
+					CellState cellState;
+
+					switch (cellChar)
+					{
+						case 'A':
+							cellState = CellState.Alive;
+							break;
+						case 'D':
+							cellState = CellState.Dead;
+							break;
+						default:
+							cellState = CellState.Empty;
+							break;
+					}
+
+					resultCellMap[row, column] = new Cell(new Tuple<int, int>(row, column), cellState);
+				}
+			}
+
+			return new Generation(rows, columns, resultCellMap);
+		}
+
 		public void Import(string[] gameMap)
 		{
 			var mapSize = gameMap[0].Split(',');
-			var width = int.Parse(mapSize[0]);
-			var height = int.Parse(mapSize[1]);
+			var columns = int.Parse(mapSize[0]);
+			var rows = int.Parse(mapSize[1]);
+			var map = gameMap.Skip(1).ToArray();
+			
+			var generation = ParseMap(rows, columns, map);
+			_gameEngine.ImportGeneration(generation);
+			GameRows = rows;
+			GameColumns = columns;
+		}
 
-			var map = gameMap.Skip(1);
-			_gameEngine.ImportGeneration(height, width, map);
+		public string Export()
+		{
+			return _gameEngine.ActiveGeneration.ToString();
 		}
 	}
 }

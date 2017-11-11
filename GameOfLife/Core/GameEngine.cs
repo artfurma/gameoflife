@@ -8,24 +8,26 @@ namespace GameOfLife.Core
 {
 	public class GameEngine
 	{
-		private Generation _activeGeneration;
-		private readonly int _gameSize;
-		private readonly int _gameWidth;
-		private readonly int _gameHeight;
-		private readonly int _underpopulationRule;
-		private readonly int _overpopulationRule;
-		private readonly int _reproductionRule;
+		private int _underpopulationRule;
+		private int _overpopulationRule;
+		private int _reproductionRule;
+
+		public Generation ActiveGeneration { get; set; }
 
 		public int GenerationNumber { get; set; }
 
-		public GameEngine(int gameSize)
+		public GameEngine(Generation generation)
 		{
-			_gameSize = gameSize;
+			InitGameRules();
+			ActiveGeneration = generation;
+			GenerationNumber = 1;
+		}
+
+		public void InitGameRules()
+		{
 			_underpopulationRule = 2;
 			_overpopulationRule = 3;
 			_reproductionRule = 3;
-			_activeGeneration = new Generation(_gameSize);
-			GenerationNumber = 1;
 		}
 
 		private int GetNumberOfCellNeighbours(Cell cell, Generation generation)
@@ -50,18 +52,18 @@ namespace GameOfLife.Core
 		{
 			var modifiedCells = new List<Tuple<Tuple<int, int>, CellState>>();
 
-			for (var row = 0; row < _gameSize; row++)
+			for (var row = 0; row < ActiveGeneration.Rows; row++)
 			{
-				for (var column = 0; column < _gameSize; column++)
+				for (var column = 0; column < ActiveGeneration.Columns; column++)
 				{
-					var cell = _activeGeneration.GetCell(row, column);
-					var neighbours = GetNumberOfCellNeighbours(cell, _activeGeneration);
+					var cell = ActiveGeneration.GetCell(row, column);
+					var neighbours = GetNumberOfCellNeighbours(cell, ActiveGeneration);
 
 					if (cell.State == CellState.Alive && (neighbours < _underpopulationRule || neighbours > _overpopulationRule))
 					{
 						modifiedCells.Add(new Tuple<Tuple<int, int>, CellState>(cell.Position, CellState.Dead));
 					}
-					else if ((cell.State == CellState.Dead || cell.State  == CellState.Empty) && neighbours == _reproductionRule)
+					else if ((cell.State == CellState.Dead || cell.State == CellState.Empty) && neighbours == _reproductionRule)
 					{
 						modifiedCells.Add(new Tuple<Tuple<int, int>, CellState>(cell.Position, CellState.Alive));
 					}
@@ -73,34 +75,34 @@ namespace GameOfLife.Core
 				GenerationNumber++;
 
 				Parallel.ForEach(modifiedCells,
-					tuple => _activeGeneration.SetCell(tuple.Item1.Item1, tuple.Item1.Item2, tuple.Item2));
+					tuple => ActiveGeneration.SetCell(tuple.Item1.Item1, tuple.Item1.Item2, tuple.Item2));
 			}
 		}
 
 		public void Reset()
 		{
 			GenerationNumber = 1;
-			_activeGeneration.Reset();
+			ActiveGeneration.Reset();
 		}
 
 		public Cell GetCell(int row, int column)
 		{
-			return _activeGeneration.GetCell(row, column);
+			return ActiveGeneration.GetCell(row, column);
 		}
 
 		public void SetCell(int row, int column, CellState state)
 		{
-			_activeGeneration.SetCell(row, column, state);
+			ActiveGeneration.SetCell(row, column, state);
 		}
 
 		public void UpdateCellState(int row, int column)
 		{
-			_activeGeneration.UpdateCellState(row, column);
+			ActiveGeneration.UpdateCellState(row, column);
 		}
 
-		public void ImportGeneration(int rows, int columns, string[] map)
+		public void ImportGeneration(Generation generation)
 		{
-			_activeGeneration = new Generation(rows, columns, map);
+			ActiveGeneration = generation;
 			GenerationNumber = 1;
 		}
 	}

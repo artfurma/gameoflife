@@ -1,33 +1,36 @@
 ﻿using System;
 using System.Text;
+using GameOfLife.Helpers;
 
 namespace GameOfLife.Models
 {
 	public class Generation
 	{
 		private readonly Cell[,] _cells;
-		private readonly int _rows;
-		private readonly int _columns;
+		public int Rows { get; set; }
+		public int Columns { get; set; }
 
-		public Generation(int size)
+		public Generation(int rows, int columns)
 		{
-			_cells = new Cell[size, size];
+			Rows = rows;
+			Columns = columns;
+			_cells = new Cell[Rows, Columns];
 			InitCells();
 		}
 
-		public Generation(int rows, int columns, string[] inputMap)
+		public Generation(int rows, int columns, Cell[,] cells)
 		{
-			_rows = rows;
-			_columns = columns;
-			_cells = new Cell[_rows, _columns];
-			ParseMap(inputMap);
+			Rows = rows;
+			Columns = columns;
+			_cells = cells;
+			InitCells();
 		}
 
 		private void InitCells()
 		{
-			for (var row = 0; row < _cells.GetLength(0); row++)
+			for (var row = 0; row < Rows; row++)
 			{
-				for (var column = 0; column < _cells.GetLength(0); column++)
+				for (var column = 0; column < Columns; column++)
 				{
 					_cells[row, column] = new Cell(new Tuple<int, int>(row, column), CellState.Empty);
 				}
@@ -36,7 +39,7 @@ namespace GameOfLife.Models
 
 		public Cell GetCell(int row, int column)
 		{
-			if (row < 0 || row >= _cells.GetLength(0) || column < 0 || column >= _cells.GetLength(0))
+			if (row < 0 || row >= Rows || column < 0 || column >= Columns)
 			{
 				return null;
 			}
@@ -81,50 +84,22 @@ namespace GameOfLife.Models
 			}
 		}
 
-		public void ParseMap(string[] inputMap)
+		public override string ToString()
 		{
-			for (var row = 0; row < _rows; row++)
+			var gridString = new StringBuilder();
+			gridString.AppendLine($"{Columns},{Rows}");
+
+			for (var row = 0; row < Rows; row++)
 			{
-				for (var column = 0; column < _columns; column++)
+				for (var column = 0; column < Columns; column++)
 				{
-					var cellChar = inputMap[row][column];
-					CellState cellState;
-
-					switch (cellChar)
-					{
-						case 'A':
-							cellState = CellState.Alive;
-							break;
-						case 'D':
-							cellState = CellState.Dead;
-							break;
-						default:
-							cellState = CellState.Empty;
-							break;
-					}
-
-					_cells[row, column] = new Cell(new Tuple<int, int>(row, column), cellState);
+					gridString.Append(GetCell(row, column).State.ToNamePrefix());
 				}
-			}
-		}
 
-		//		public override string ToString()
-		//		{
-		//			StringBuilder gridString = new StringBuilder();
-		//
-		//			for (int row = 0; row < ; row++)
-		//			{
-		//				for (int column = 0; column < UniverseSize; column++)
-		//				{
-		//					gridString.Append(
-		//						string.Format("{0} ", GetCell(row, column).Alive ? "1" : "0")
-		//					);
-		//				}
-		//
-		//				gridString.AppendLine();
-		//			}
-		//
-		//			return gridString.ToString();
-		//		}
+				gridString.AppendLine();
+			}
+
+			return gridString.ToString();
+		}
 	}
 }

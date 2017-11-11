@@ -9,5 +9,5 @@
 	<UserControl.Resources>
 		<ResourceDictionary Source="Styles.xaml" />
 	</UserControl.Resources>
-	<Grid x:Name="GameGrid" Style="{StaticResource GameboardControlStyle}"/>
+	<UniformGrid x:Name="GameGrid" Rows="{Binding ElementName=GoLGameboard, Path=Rows}" Columns="{Binding ElementName=GoLGameboard, Path=Columns}" Style="{StaticResource GameboardControlStyle}"/>
 </UserControl>

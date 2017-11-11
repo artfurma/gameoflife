@@ -105,6 +105,7 @@
       <DependentUpon>GameboardContol.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\GameEngine.cs" />
+    <Compile Include="Helpers\CellStateExtension.cs" />
     <Compile Include="Helpers\CellStateToColorConverter.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Models\Cell.cs" />
@@ -184,6 +185,11 @@
   <ItemGroup>
     <Resource Include="gameoflife.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\export_64.png" />
+    <Resource Include="Resources\Images\import_64.png" />
+    <Resource Include="Resources\Images\speed_32.png" />
+    <Resource Include="Resources\Images\speed_64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

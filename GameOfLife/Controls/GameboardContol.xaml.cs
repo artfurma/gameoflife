@@ -18,14 +18,21 @@ namespace GameOfLife.Controls
 	{
 		private readonly GameViewModel _gameViewModel;
 
+		#region Dependency Properties
+
+		public static readonly DependencyProperty RowsProperty =
+			DependencyProperty.Register("Rows", typeof(int), typeof(GameboardContol),
+				new FrameworkPropertyMetadata(1, RowsPropertyChangedHandler));
+
+		public static readonly DependencyProperty ColumnsProperty =
+			DependencyProperty.Register("Columns", typeof(int), typeof(GameboardContol),
+				new FrameworkPropertyMetadata(1, ColumnsPropertyChangedHandler));
+
 		public int Rows
 		{
 			get => (int) GetValue(RowsProperty);
 			set => SetValue(RowsProperty, value);
 		}
-
-		public static readonly DependencyProperty RowsProperty =
-			DependencyProperty.Register("Rows", typeof(int), typeof(GameboardContol), new PropertyMetadata(50));
 
 		public int Columns
 		{
@@ -33,36 +40,60 @@ namespace GameOfLife.Controls
 			set => SetValue(ColumnsProperty, value);
 		}
 
-		public static readonly DependencyProperty ColumnsProperty =
-			DependencyProperty.Register("Columns", typeof(int), typeof(GameboardContol), new PropertyMetadata(100));
+		#endregion
 
 		public GameboardContol()
 		{
 			InitializeComponent();
 			_gameViewModel = IoC.Get<GameViewModel>();
-			InitializeGameboard();
+			InitializeGameGrid(_gameViewModel);
 		}
 
-		private void InitializeGameboard()
+		private static void RowsPropertyChangedHandler(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			for (var row = 0; row < Rows; row++)
-			{
-				GameGrid.RowDefinitions.Add(new RowDefinition());
-			}
+			var gameboard = (GameboardContol) sender;
+			gameboard.GameGrid.Children.Clear();
 
-			for (var column = 0; column < Columns; column++)
+			for (var row = 0; row < gameboard._gameViewModel.GameRows; row++)
 			{
-				GameGrid.ColumnDefinitions.Add(new ColumnDefinition());
-			}
-
-			for (var row = 0; row < Rows; row++)
-			{
-				for (var column = 0; column < Columns; column++)
+				for (var column = 0; column < gameboard._gameViewModel.GameColumns; column++)
 				{
-					var cell = InitializeCell(_gameViewModel.GetCell(row, column));
-					Grid.SetRow(cell, row);
-					Grid.SetColumn(cell, column);
-					GameGrid.Children.Add(cell);
+					var cell = gameboard._gameViewModel.GetCell(row, column);
+					if (cell == null)
+						break;
+					var cellControl = gameboard.InitializeCell(cell);
+					gameboard.GameGrid.Children.Add(cellControl);
+				}
+			}
+		}
+
+		private static void ColumnsPropertyChangedHandler(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			var gameboard = (GameboardContol) sender;
+			gameboard.GameGrid.Children.Clear();
+
+			for (var row = 0; row < gameboard._gameViewModel.GameRows; row++)
+			{
+				for (var column = 0; column < gameboard._gameViewModel.GameColumns; column++)
+				{
+					var cell = gameboard._gameViewModel.GetCell(row, column);
+					if (cell == null)
+						break;
+					var cellControl = gameboard.InitializeCell(cell);
+					gameboard.GameGrid.Children.Add(cellControl);
+				}
+			}
+		}
+
+		private void InitializeGameGrid(GameViewModel gameViewModel)
+		{
+			for (var row = 0; row < gameViewModel.GameRows; row++)
+			{
+				for (var column = 0; column < gameViewModel.GameColumns; column++)
+				{
+					var cell = gameViewModel.GetCell(row, column);
+					var cellControl = InitializeCell(cell);
+					GameGrid.Children.Add(cellControl);
 				}
 			}
 		}
@@ -70,9 +101,11 @@ namespace GameOfLife.Controls
 		private Border InitializeCell(Cell cell)
 		{
 			var cellControl = new Border {DataContext = cell, Style = Resources["CellControlStyle"] as Style};
+
 			cellControl.InputBindings.Add(new InputBinding(_gameViewModel.UpdateCellStateCommand,
 					new MouseGesture(MouseAction.LeftClick))
 				{CommandParameter = new Tuple<int, int>(cell.Position.Item1, cell.Position.Item2)});
+
 			cellControl.SetBinding(BackgroundProperty, new Binding
 			{
 				Path = new PropertyPath("State"),

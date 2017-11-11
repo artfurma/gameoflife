@@ -11,6 +11,7 @@ namespace GameOfLife.Models
 {
 	public enum CellState
 	{
+		[Description]
 		Empty,
 		Alive,
 		Dead

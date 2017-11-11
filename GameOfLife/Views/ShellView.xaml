@@ -17,7 +17,7 @@
 				<Fluent:Backstage Header="Plik">
 					<Fluent:BackstageTabControl>
 						<Fluent:Button Click="OnImportButtonClick" x:Name="Import" Header="Import" />
-						<Fluent:Button x:Name="Export" Header="Eksport" />
+						<Fluent:Button Click="OnExportButtonClick" x:Name="Export" Header="Eksport" />
 					</Fluent:BackstageTabControl>
 				</Fluent:Backstage>
 			</Fluent:Ribbon.Menu>
@@ -46,7 +46,16 @@
 				</Fluent:RibbonGroupBox>
 			</Fluent:RibbonTabItem>
 			<Fluent:RibbonTabItem Header="Ustawienia">
-
+				<Fluent:RibbonGroupBox Header="Import / Eksport">
+					<Fluent:Button x:Name="Import2"
+					               Header="Importuj"
+					               Icon="\Resources\Images\import_64.png"
+					               LargeIcon="\Resources\Images\import_64.png" />
+					<Fluent:Button x:Name="Export2"
+					               Header="Eksportuj"
+					               Icon="\Resources\Images\export_64.png"
+					               LargeIcon="\Resources\Images\export_64.png" />
+				</Fluent:RibbonGroupBox>
 			</Fluent:RibbonTabItem>
 		</Fluent:Ribbon>
 		<ContentControl Grid.Row="1" x:Name="ActiveItem" />
