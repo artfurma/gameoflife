@@ -191,5 +191,9 @@
     <Resource Include="Resources\Images\speed_32.png" />
     <Resource Include="Resources\Images\speed_64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\grid.png" />
+    <Resource Include="Resources\Images\grid2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

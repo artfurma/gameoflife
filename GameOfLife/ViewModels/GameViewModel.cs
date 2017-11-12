@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using ControlzEx.Microsoft.Windows.Shell;
 using GameOfLife.Core;
 using GameOfLife.Helpers;
 using GameOfLife.Models;
@@ -13,6 +14,7 @@ namespace GameOfLife.ViewModels
 	public class GameViewModel : Screen
 	{
 		private readonly GameEngine _gameEngine;
+		private readonly int _maxSpeed;
 
 		#region Binded Properties
 
@@ -24,6 +26,9 @@ namespace GameOfLife.ViewModels
 		private bool _running;
 		private int _gameRows;
 		private int _gameColumns;
+		private int _currentSpeed;
+		private int _speedIndicator;
+		private int _currentSize;
 
 		public int CurrentGenerationNumber
 		{
@@ -105,6 +110,38 @@ namespace GameOfLife.ViewModels
 			}
 		}
 
+		public int CurrentSpeed
+		{
+			get => _currentSpeed;
+			set
+			{
+				_currentSpeed = value;
+				SpeedIndicator = value;
+				NotifyOfPropertyChange(() => CurrentSpeed);
+			}
+		}
+
+		public int SpeedIndicator
+		{
+			get => _speedIndicator;
+			set
+			{
+				_speedIndicator = value;
+				NotifyOfPropertyChange((() => SpeedIndicator));
+			}
+		}
+
+		public int CurrentSize
+		{
+			get => _currentSize;
+			set
+			{
+				_currentSize = value;
+				ResizeGameMap();
+				NotifyOfPropertyChange(() => CurrentSpeed);
+			}
+		}
+
 		#endregion
 
 		#region Commands
@@ -119,8 +156,8 @@ namespace GameOfLife.ViewModels
 		public GameViewModel()
 		{
 			//TODO: Zamienić to na binding
-			GameRows = 50;
-			GameColumns = 100;
+			GameRows = 10;
+			GameColumns = 20;
 
 			NextGenerationCommand = new RelayCommand<object>(_ => NextGeneration(), _ => CanPerformNextGeneration);
 			ResetCommand = new RelayCommand<object>(_ => Reset(), _ => CanReset);
@@ -132,6 +169,9 @@ namespace GameOfLife.ViewModels
 			CanReset = true;
 			CanPerformNextGeneration = true;
 			CanUpdateCellState = true;
+			_maxSpeed = 120;
+			CurrentSpeed = 50;
+			CurrentSize = 20;
 		}
 
 		public void NextGeneration()
@@ -163,7 +203,8 @@ namespace GameOfLife.ViewModels
 
 			while (Running)
 			{
-				await Task.Delay(20);
+				var speed = _maxSpeed - CurrentSpeed;
+				await Task.Delay(speed);
 				NextGeneration();
 			}
 		}
@@ -209,7 +250,7 @@ namespace GameOfLife.ViewModels
 			var columns = int.Parse(mapSize[0]);
 			var rows = int.Parse(mapSize[1]);
 			var map = gameMap.Skip(1).ToArray();
-			
+
 			var generation = ParseMap(rows, columns, map);
 			_gameEngine.ImportGeneration(generation);
 			GameRows = rows;
@@ -219,6 +260,22 @@ namespace GameOfLife.ViewModels
 		public string Export()
 		{
 			return _gameEngine.ActiveGeneration.ToString();
+		}
+
+		public async void ResizeGameMap()
+		{
+			var newRows = 1 * CurrentSize;
+			var newColumns = 2 * CurrentSize;
+
+			await Task.Run(() =>
+			{
+				var generation = new Generation(newRows, newColumns);
+				_gameEngine.ImportGeneration(generation);
+				GameRows = newRows;
+				GameColumns = newColumns;
+			});
+
+			Stop();
 		}
 	}
 }

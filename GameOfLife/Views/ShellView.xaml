@@ -5,7 +5,8 @@
                      Title="Conway's Game of Life - Artur Furmanczyk [155063], RAI 2017, ETI PG"
                      Width="800"
                      Height="600"
-                     xmlns:cal="http://www.caliburnproject.org">
+                     xmlns:cal="http://www.caliburnproject.org"
+                     ResizeMode="NoResize">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -18,7 +19,9 @@
 					<Fluent:BackstageTabControl>
 						<Fluent:Button Click="OnImportButtonClick" x:Name="Import" Header="Import" />
 						<Fluent:Button Click="OnExportButtonClick" x:Name="Export" Header="Eksport" />
-					</Fluent:BackstageTabControl>
+					    <Fluent:SeparatorTabItem Header=""/>
+                        <Fluent:Button Click="OnAboutButtonClick" x:Name="About" Header="O aplikacji" />
+                    </Fluent:BackstageTabControl>
 				</Fluent:Backstage>
 			</Fluent:Ribbon.Menu>
 

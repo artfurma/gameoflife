@@ -61,9 +61,9 @@ namespace GameOfLife.Models
 
 		public void Reset()
 		{
-			for (var row = 0; row < _cells.GetLength(0); row++)
+			for (var row = 0; row < Rows; row++)
 			{
-				for (var column = 0; column < _cells.GetLength(0); column++)
+				for (var column = 0; column < Columns; column++)
 				{
 					SetCell(row, column, CellState.Empty);
 				}
@@ -96,7 +96,8 @@ namespace GameOfLife.Models
 					gridString.Append(GetCell(row, column).State.ToNamePrefix());
 				}
 
-				gridString.AppendLine();
+				if (row < Rows - 1)
+					gridString.AppendLine();
 			}
 
 			return gridString.ToString();

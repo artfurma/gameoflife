@@ -69,20 +69,5 @@ namespace GameOfLife.ViewModels
 			StopVisibility = Visibility.Collapsed;
 			StartVisibility = Visibility.Visible;
 		}
-
-		public void Import2()
-		{
-			var openFileDialog = new OpenFileDialog { Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*" };
-
-			if (openFileDialog.ShowDialog() == true)
-			{
-				var gameMap = File.ReadAllText(openFileDialog.FileName);
-			}
-		}
-
-		public void Export2()
-		{
-			
-		}
 	}
 }
