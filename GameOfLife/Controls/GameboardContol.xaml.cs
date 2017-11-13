@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,6 +18,7 @@ namespace GameOfLife.Controls
 	public partial class GameboardContol : UserControl
 	{
 		private readonly GameViewModel _gameViewModel;
+		private IList<Border> _cells;
 
 		#region Dependency Properties
 
@@ -27,6 +29,14 @@ namespace GameOfLife.Controls
 		public static readonly DependencyProperty ColumnsProperty =
 			DependencyProperty.Register("Columns", typeof(int), typeof(GameboardContol),
 				new FrameworkPropertyMetadata(1, ColumnsPropertyChangedHandler));
+
+		public static readonly DependencyProperty AliveColorProperty =
+			DependencyProperty.Register("AliveColor", typeof(SolidColorBrush), typeof(GameboardContol),
+				new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(43, 62, 80)), ThemeChangedHandler));
+
+		public static readonly DependencyProperty DeadColorProperty =
+			DependencyProperty.Register("DeadColor", typeof(SolidColorBrush), typeof(GameboardContol),
+				new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(64, 204, 244)), ThemeChangedHandler));
 
 		public int Rows
 		{
@@ -40,12 +50,25 @@ namespace GameOfLife.Controls
 			set => SetValue(ColumnsProperty, value);
 		}
 
+		public SolidColorBrush AliveColor
+		{
+			get => (SolidColorBrush) GetValue(AliveColorProperty);
+			set => SetValue(AliveColorProperty, value);
+		}
+
+		public SolidColorBrush DeadColor
+		{
+			get => (SolidColorBrush) GetValue(DeadColorProperty);
+			set => SetValue(DeadColorProperty, value);
+		}
+
 		#endregion
 
 		public GameboardContol()
 		{
 			InitializeComponent();
 			_gameViewModel = IoC.Get<GameViewModel>();
+			_cells = new List<Border>();
 			InitializeGameGrid(_gameViewModel);
 		}
 
@@ -53,6 +76,7 @@ namespace GameOfLife.Controls
 		{
 			var gameboard = (GameboardContol) sender;
 			gameboard.GameGrid.Children.Clear();
+			gameboard._cells.Clear();
 
 			for (var row = 0; row < gameboard._gameViewModel.GameRows; row++)
 			{
@@ -71,6 +95,7 @@ namespace GameOfLife.Controls
 		{
 			var gameboard = (GameboardContol) sender;
 			gameboard.GameGrid.Children.Clear();
+			gameboard._cells.Clear();
 
 			for (var row = 0; row < gameboard._gameViewModel.GameRows; row++)
 			{
@@ -85,6 +110,22 @@ namespace GameOfLife.Controls
 			}
 		}
 
+		private static void ThemeChangedHandler(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			var gameboard = (GameboardContol)sender;
+
+			foreach (var cell in gameboard._cells)
+			{
+				cell.SetBinding(BackgroundProperty, new Binding
+				{
+					Path = new PropertyPath("State"),
+					Mode = BindingMode.TwoWay,
+					Converter = new CellStateToColorConverter(emptyColor: Brushes.White,
+						aliveColor: gameboard.AliveColor,
+						deadColor: gameboard.DeadColor)
+				});
+			}
+		}
 		private void InitializeGameGrid(GameViewModel gameViewModel)
 		{
 			for (var row = 0; row < gameViewModel.GameRows; row++)
@@ -111,10 +152,11 @@ namespace GameOfLife.Controls
 				Path = new PropertyPath("State"),
 				Mode = BindingMode.TwoWay,
 				Converter = new CellStateToColorConverter(emptyColor: Brushes.White,
-					aliveColor: new SolidColorBrush(Color.FromRgb(43, 62, 80)),
-					deadColor: new SolidColorBrush(Color.FromRgb(64, 204, 244)))
+					aliveColor: AliveColor,
+					deadColor: DeadColor)
 			});
 
+			_cells.Add(cellControl);
 			return cellControl;
 		}
 	}

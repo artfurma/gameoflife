@@ -10,14 +10,15 @@
     <Grid>
         <Grid.Style>
             <Style TargetType="Grid">
-                <Setter Property="Background" Value="White"/>
+                <Setter Property="Background" Value="White" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding CanReset}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#00A8EB"
-                                                    FillBehavior="Stop" RepeatBehavior="Forever" AutoReverse="True" Duration="0:0:5" />
+                                                    FillBehavior="Stop" RepeatBehavior="Forever" AutoReverse="True"
+                                                    Duration="0:0:5" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
@@ -26,7 +27,10 @@
             </Style>
         </Grid.Style>
         <golControls:GameboardContol x:Name="GameGrid" Rows="{Binding Path=GameRows}"
-                                     Columns="{Binding Path=GameColumns}" HorizontalAlignment="Left" Height="400"
+                                     Columns="{Binding Path=GameColumns}"
+                                     AliveColor="{Binding Path=AliveColor}"
+                                     DeadColor="{Binding Path=DeadColor}"
+                                     HorizontalAlignment="Left" Height="400"
                                      Width="780"
                                      Margin="10, 10, 10, 50" VerticalAlignment="Bottom" />
         <Label x:Name="GenerationLabel" Content="Generacja:" HorizontalAlignment="Left" Margin="10"
@@ -45,7 +49,7 @@
                    VerticalAlignment="Bottom">
             <Image Height="32" DockPanel.Dock="Left" x:Name="SizeIcon" Source="../Resources/Images/grid.png"
                    Margin="0, 0, 5, 5" />
-            <Slider x:Name="CurrentSize" Minimum="1" Height="32" Maximum="25" TickPlacement="BottomRight"
+            <Slider x:Name="CurrentSize" Minimum="1" Height="32" Maximum="40" TickPlacement="BottomRight"
                     TickFrequency="10" />
         </DockPanel>
     </Grid>

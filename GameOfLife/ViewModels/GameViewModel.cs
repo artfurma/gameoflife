@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Caliburn.Micro;
 using ControlzEx.Microsoft.Windows.Shell;
 using GameOfLife.Core;
@@ -29,6 +30,9 @@ namespace GameOfLife.ViewModels
 		private int _currentSpeed;
 		private int _speedIndicator;
 		private int _currentSize;
+
+		private SolidColorBrush _aliveColor;
+		private SolidColorBrush _deadColor;
 
 		public int CurrentGenerationNumber
 		{
@@ -127,7 +131,7 @@ namespace GameOfLife.ViewModels
 			set
 			{
 				_speedIndicator = value;
-				NotifyOfPropertyChange((() => SpeedIndicator));
+				NotifyOfPropertyChange(() => SpeedIndicator);
 			}
 		}
 
@@ -139,6 +143,26 @@ namespace GameOfLife.ViewModels
 				_currentSize = value;
 				ResizeGameMap();
 				NotifyOfPropertyChange(() => CurrentSpeed);
+			}
+		}
+
+		public SolidColorBrush AliveColor
+		{
+			get => _aliveColor;
+			set
+			{
+				_aliveColor = value;
+				NotifyOfPropertyChange(() => AliveColor);
+			}
+		}
+
+		public SolidColorBrush DeadColor
+		{
+			get => _deadColor;
+			set
+			{
+				_deadColor = value;
+				NotifyOfPropertyChange(() => DeadColor);
 			}
 		}
 
@@ -172,6 +196,7 @@ namespace GameOfLife.ViewModels
 			_maxSpeed = 120;
 			CurrentSpeed = 50;
 			CurrentSize = 20;
+			ResetTheme();
 		}
 
 		public void NextGeneration()
@@ -184,6 +209,7 @@ namespace GameOfLife.ViewModels
 		{
 			_gameEngine.Reset();
 			CurrentGenerationNumber = 1;
+			ResetTheme();
 		}
 
 		public Cell GetCell(int row, int column)
@@ -216,32 +242,59 @@ namespace GameOfLife.ViewModels
 
 		public Generation ParseMap(int rows, int columns, string[] inputMap)
 		{
-			var resultCellMap = new Cell[rows, columns];
-			for (var row = 0; row < rows; row++)
+			if (rows != GameRows || columns != GameColumns)
 			{
-				for (var column = 0; column < columns; column++)
+				var resultCellMap = new Cell[rows, columns];
+				for (var row = 0; row < rows; row++)
 				{
-					var cellChar = inputMap[row][column];
-					CellState cellState;
-
-					switch (cellChar)
+					for (var column = 0; column < columns; column++)
 					{
-						case 'A':
-							cellState = CellState.Alive;
-							break;
-						case 'D':
-							cellState = CellState.Dead;
-							break;
-						default:
-							cellState = CellState.Empty;
-							break;
+						var cellChar = inputMap[row][column];
+						CellState cellState;
+
+						switch (cellChar)
+						{
+							case 'A':
+								cellState = CellState.Alive;
+								break;
+							case 'D':
+								cellState = CellState.Dead;
+								break;
+							default:
+								cellState = CellState.Empty;
+								break;
+						}
+
+						resultCellMap[row, column] = new Cell(new Tuple<int, int>(row, column), cellState);
 					}
-
-					resultCellMap[row, column] = new Cell(new Tuple<int, int>(row, column), cellState);
 				}
+				return new Generation(rows, columns, resultCellMap);
 			}
+			else
+			{
+				_gameEngine.Reset();
+				for (var row = 0; row < rows; row++)
+				{
+					for (var column = 0; column < columns; column++)
+					{
+						var cellChar = inputMap[row][column];
 
-			return new Generation(rows, columns, resultCellMap);
+						switch (cellChar)
+						{
+							case 'A':
+								_gameEngine.SetCell(row, column, CellState.Alive);
+								break;
+							case 'D':
+								_gameEngine.SetCell(row, column, CellState.Dead);
+								break;
+							default:
+								_gameEngine.SetCell(row, column, CellState.Empty);
+								break;
+						}
+					}
+				}
+				return _gameEngine.ActiveGeneration;
+			}
 		}
 
 		public void Import(string[] gameMap)
@@ -253,8 +306,12 @@ namespace GameOfLife.ViewModels
 
 			var generation = ParseMap(rows, columns, map);
 			_gameEngine.ImportGeneration(generation);
-			GameRows = rows;
-			GameColumns = columns;
+
+			if (rows != GameRows)
+				GameRows = rows;
+
+			if (columns != GameColumns)
+				GameColumns = columns;
 		}
 
 		public string Export()
@@ -264,18 +321,51 @@ namespace GameOfLife.ViewModels
 
 		public void ResizeGameMap()
 		{
-			var newRows = 1 * CurrentSize;
-			var newColumns = 2 * CurrentSize;
+			Stop();
 
-//			await Task.Run(() =>
-//			{
+			var newRows = CurrentSize;
+			var newColumns = 2 * newRows;
+
 			var generation = new Generation(newRows, newColumns);
 			_gameEngine.ImportGeneration(generation);
 			GameRows = newRows;
 			GameColumns = newColumns;
-//			});
+		}
 
-			Stop();
+		private void ResetTheme()
+		{
+			DeadColor = new SolidColorBrush(Color.FromRgb(64, 204, 244));
+			AliveColor = new SolidColorBrush(Color.FromRgb(43, 62, 80));
+		}
+
+		public void ChangeTheme()
+		{
+			var rand = new Random();
+
+			var colorIndex = rand.Next(1, 6);
+
+			switch (colorIndex)
+			{
+				case 1:
+					AliveColor = new SolidColorBrush(Colors.DarkViolet);
+					DeadColor = new SolidColorBrush(Colors.Violet);
+					break;
+				case 2:
+					AliveColor = new SolidColorBrush(Colors.DarkGreen);
+					DeadColor = new SolidColorBrush(Colors.GreenYellow);
+					break;
+				case 3:
+					AliveColor = new SolidColorBrush(Colors.DarkOrange);
+					DeadColor = new SolidColorBrush(Colors.Yellow);
+					break;
+				case 4:
+					AliveColor = new SolidColorBrush(Colors.DarkRed);
+					DeadColor = new SolidColorBrush(Colors.Red);
+					break;
+				case 5:
+					ResetTheme();
+					break;
+			}
 		}
 	}
 }

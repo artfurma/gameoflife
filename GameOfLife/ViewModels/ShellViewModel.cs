@@ -10,6 +10,9 @@ namespace GameOfLife.ViewModels
 	public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShell
 	{
 		private Visibility _startVisibility;
+		private int _underpopulationRule;
+		private int _overpopulationRule;
+		private int _birthRule;
 
 		public Visibility StartVisibility
 		{
@@ -30,6 +33,39 @@ namespace GameOfLife.ViewModels
 			{
 				_stopVisibility = value;
 				NotifyOfPropertyChange(() => StopVisibility);
+			}
+		}
+
+		public int UnderpopulationRule
+		{
+			get => _underpopulationRule;
+			set
+			{
+				_underpopulationRule = value;
+				ChangeUnderpopulationRule();
+				NotifyOfPropertyChange(() => UnderpopulationRule);
+			}
+		}
+
+		public int OverpopulationRule
+		{
+			get => _overpopulationRule;
+			set
+			{
+				_overpopulationRule = value;
+				ChangeOverpopulationRule();
+				NotifyOfPropertyChange(() => OverpopulationRule);
+			}
+		}
+
+		public int BirthRule
+		{
+			get => _birthRule;
+			set
+			{
+				_birthRule = value;
+				ChangeBirthRule();
+				NotifyOfPropertyChange(() => BirthRule);
 			}
 		}
 
@@ -114,7 +150,6 @@ namespace GameOfLife.ViewModels
 				MessageBox.Show(e.ToString());
 				throw;
 			}
-			
 		}
 
 		public void Benchmark1()
@@ -130,7 +165,26 @@ namespace GameOfLife.ViewModels
 				MessageBox.Show(e.ToString());
 				throw;
 			}
+		}
 
+		public void ChangeTheme()
+		{
+			(activeSscreen as GameViewModel)?.ChangeTheme();
+		}
+
+		public void ChangeUnderpopulationRule()
+		{
+			MessageBox.Show("Zmieniono underpopulation");
+		}
+
+		public void ChangeOverpopulationRule()
+		{
+			MessageBox.Show("Zmieniono over");
+		}
+
+		public void ChangeBirthRule()
+		{
+//			MessageBox.Show("Birth");
 		}
 	}
 }
