@@ -8,9 +8,9 @@ namespace GameOfLife.Core
 {
 	public class GameEngine
 	{
-		private int _underpopulationRule;
-		private int _overpopulationRule;
-		private int _reproductionRule;
+		public int UnderpopulationRule { get; set; }
+		public int OverpopulationRule { get; set; }
+		public int ReproductionRule { get; set; }
 
 		public Generation ActiveGeneration { get; set; }
 
@@ -25,9 +25,9 @@ namespace GameOfLife.Core
 
 		public void InitGameRules()
 		{
-			_underpopulationRule = 2;
-			_overpopulationRule = 3;
-			_reproductionRule = 3;
+			UnderpopulationRule = 2;
+			OverpopulationRule = 3;
+			ReproductionRule = 3;
 		}
 
 		private int GetNumberOfCellNeighbours(Cell cell, Generation generation)
@@ -59,11 +59,11 @@ namespace GameOfLife.Core
 					var cell = ActiveGeneration.GetCell(row, column);
 					var neighbours = GetNumberOfCellNeighbours(cell, ActiveGeneration);
 
-					if (cell.State == CellState.Alive && (neighbours < _underpopulationRule || neighbours > _overpopulationRule))
+					if (cell.State == CellState.Alive && (neighbours < UnderpopulationRule || neighbours > OverpopulationRule))
 					{
 						modifiedCells.Add(new Tuple<Tuple<int, int>, CellState>(cell.Position, CellState.Dead));
 					}
-					else if ((cell.State == CellState.Dead || cell.State == CellState.Empty) && neighbours == _reproductionRule)
+					else if ((cell.State == CellState.Dead || cell.State == CellState.Empty) && neighbours == ReproductionRule)
 					{
 						modifiedCells.Add(new Tuple<Tuple<int, int>, CellState>(cell.Position, CellState.Alive));
 					}

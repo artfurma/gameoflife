@@ -30,6 +30,9 @@ namespace GameOfLife.ViewModels
 		private int _currentSpeed;
 		private int _speedIndicator;
 		private int _currentSize;
+		private int _underpopulationRule;
+		private int _overpopulationRule;
+		private int _birthRule;
 
 		private SolidColorBrush _aliveColor;
 		private SolidColorBrush _deadColor;
@@ -143,6 +146,39 @@ namespace GameOfLife.ViewModels
 				_currentSize = value;
 				ResizeGameMap();
 				NotifyOfPropertyChange(() => CurrentSpeed);
+			}
+		}
+
+		public int UnderpopulationRule
+		{
+			get => _underpopulationRule;
+			set
+			{
+				_underpopulationRule = value;
+				_gameEngine.UnderpopulationRule = _underpopulationRule;
+				NotifyOfPropertyChange(() => UnderpopulationRule);
+			}
+		}
+
+		public int OverpopulationRule
+		{
+			get => _overpopulationRule;
+			set
+			{
+				_overpopulationRule = value;
+				_gameEngine.OverpopulationRule = _overpopulationRule;
+				NotifyOfPropertyChange(() => OverpopulationRule);
+			}
+		}
+
+		public int BirthRule
+		{
+			get => _birthRule;
+			set
+			{
+				_birthRule = value;
+				_gameEngine.ReproductionRule = _birthRule;
+				NotifyOfPropertyChange(() => BirthRule);
 			}
 		}
 

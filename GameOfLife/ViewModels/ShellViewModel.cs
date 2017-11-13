@@ -79,6 +79,9 @@ namespace GameOfLife.ViewModels
 			ActivateItem(activeSscreen);
 			StopVisibility = Visibility.Collapsed;
 			StartVisibility = Visibility.Visible;
+			UnderpopulationRule = 2;
+			OverpopulationRule = 3;
+			BirthRule = 3;
 		}
 
 		public void NextGeneration()
@@ -105,6 +108,9 @@ namespace GameOfLife.ViewModels
 			(activeSscreen as GameViewModel)?.Reset();
 			StopVisibility = Visibility.Collapsed;
 			StartVisibility = Visibility.Visible;
+			UnderpopulationRule = 2;
+			OverpopulationRule = 3;
+			BirthRule = 3;
 		}
 
 		public void Import()
@@ -174,17 +180,17 @@ namespace GameOfLife.ViewModels
 
 		public void ChangeUnderpopulationRule()
 		{
-			MessageBox.Show("Zmieniono underpopulation");
+			((GameViewModel) activeSscreen).UnderpopulationRule = UnderpopulationRule;
 		}
 
 		public void ChangeOverpopulationRule()
 		{
-			MessageBox.Show("Zmieniono over");
+			((GameViewModel) activeSscreen).OverpopulationRule = OverpopulationRule;
 		}
 
 		public void ChangeBirthRule()
 		{
-//			MessageBox.Show("Birth");
+			((GameViewModel) activeSscreen).BirthRule = BirthRule;
 		}
 	}
 }
