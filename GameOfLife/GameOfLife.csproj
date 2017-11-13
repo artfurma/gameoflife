@@ -206,5 +206,20 @@
   <ItemGroup>
     <Resource Include="Resources\Images\about.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Samples\glider-gun.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Samples\benchmark1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\glider.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\benchmark.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

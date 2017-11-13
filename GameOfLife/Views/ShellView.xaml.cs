@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Windows;
-using Caliburn.Micro;
-using GameOfLife.ViewModels;
-using Microsoft.Win32;
+﻿using System.Windows;
 
 namespace GameOfLife.Views
 {
@@ -11,14 +7,15 @@ namespace GameOfLife.Views
 	/// </summary>
 	public partial class ShellView : Fluent.RibbonWindow
 	{
-		private readonly GameViewModel _gameViewModel;
-
 		public ShellView()
 		{
 			InitializeComponent();
-			_gameViewModel = IoC.Get<GameViewModel>();
 		}
 
 
+		private void Exit_OnClick(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Shutdown();
+		}
 	}
 }

@@ -112,7 +112,7 @@ namespace GameOfLife.Controls
 				Mode = BindingMode.TwoWay,
 				Converter = new CellStateToColorConverter(emptyColor: Brushes.White,
 					aliveColor: new SolidColorBrush(Color.FromRgb(43, 62, 80)),
-					deadColor: new SolidColorBrush(Color.FromRgb(45, 117, 163)))
+					deadColor: new SolidColorBrush(Color.FromRgb(64, 204, 244)))
 			});
 
 			return cellControl;

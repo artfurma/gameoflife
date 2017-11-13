@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Windows;
 using Caliburn.Micro;
@@ -98,6 +99,38 @@ namespace GameOfLife.ViewModels
 		public void About()
 		{
 			_windowManager.ShowDialog(IoC.Get<AboutViewModel>());
+		}
+
+		public void GliderGun()
+		{
+			try
+			{
+				var path = Path.Combine(Environment.CurrentDirectory, @"Resources\Samples\glider-gun.txt");
+				var gliderGun = File.ReadAllLines(path);
+				(activeSscreen as GameViewModel)?.Import(gliderGun);
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.ToString());
+				throw;
+			}
+			
+		}
+
+		public void Benchmark1()
+		{
+			try
+			{
+				var path = Path.Combine(Environment.CurrentDirectory, @"Resources\Samples\benchmark1.txt");
+				var gliderGun = File.ReadAllLines(path);
+				(activeSscreen as GameViewModel)?.Import(gliderGun);
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.ToString());
+				throw;
+			}
+
 		}
 	}
 }

@@ -269,10 +269,10 @@ namespace GameOfLife.ViewModels
 
 //			await Task.Run(() =>
 //			{
-				var generation = new Generation(newRows, newColumns);
-				_gameEngine.ImportGeneration(generation);
-				GameRows = newRows;
-				GameColumns = newColumns;
+			var generation = new Generation(newRows, newColumns);
+			_gameEngine.ImportGeneration(generation);
+			GameRows = newRows;
+			GameColumns = newColumns;
 //			});
 
 			Stop();

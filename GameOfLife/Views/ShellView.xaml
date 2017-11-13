@@ -13,57 +13,65 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Fluent:Ribbon Grid.Row="0" CanMinimize="False">
-            <!--			Backstage-->
-            <!--			<Fluent:Ribbon.Menu>-->
-            <!--				<Fluent:Backstage Header="Plik">-->
-            <!--					<Fluent:BackstageTabControl>-->
-            <!--						<Fluent:Button Click="OnImportButtonClick" x:Name="Import" Header="Import" />-->
-            <!--						<Fluent:Button Click="OnExportButtonClick" x:Name="Export" Header="Eksport" />-->
-            <!--					    <Fluent:SeparatorTabItem Header=""/>-->
-            <!--                        <Fluent:Button Click="OnAboutButtonClick" x:Name="About" Header="O aplikacji" />-->
-            <!--                    </Fluent:BackstageTabControl>-->
-            <!--				</Fluent:Backstage>-->
-            <!--			</Fluent:Ribbon.Menu>-->
+<!--            Backstage -->
+                <Fluent:Ribbon.Menu>
+                    <Fluent:Backstage Header="Plik">
+                        <Fluent:BackstageTabControl>
+                            <Fluent:Button Click="Exit_OnClick" x:Name="Exit" Header="Wyjscie z Aplikacji" />
+                        </Fluent:BackstageTabControl>
+                    </Fluent:Backstage>
+                </Fluent:Ribbon.Menu>
 
-            <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Gra">
-                <Fluent:RibbonGroupBox Header="Sterowanie">
-                    <Fluent:Button x:Name="Start"
-                                   Visibility="{Binding StartVisibility}"
-                                   Header="Start"
-                                   Icon="\Resources\Images\play_64.png"
-                                   LargeIcon="\Resources\Images\play_64.png" />
-                    <Fluent:Button Header="Stop"
-                                   Visibility="{Binding StopVisibility}"
-                                   Icon="\Resources\Images\stop_64.png"
-                                   LargeIcon="\Resources\Images\stop_64.png"
-                                   x:Name="Stop" />
-                    <Fluent:Button Header="Nastepny"
-                                   Icon="\Resources\Images\forward_64.png"
-                                   LargeIcon="\Resources\Images\forward_64.png"
-                                   x:Name="NextGeneration" />
-                    <Fluent:Button x:Name="Reset"
-                                   Header="Reset"
-                                   Icon="\Resources\Images\reset_64.png"
-                                   LargeIcon="\Resources\Images\reset_64.png" />
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Import / Eksport">
-                    <Fluent:Button x:Name="Import"
-                                   Header="Importuj"
-                                   Icon="\Resources\Images\import_64.png"
-                                   LargeIcon="\Resources\Images\import_64.png" />
-                    <Fluent:Button x:Name="Export"
-                                   Header="Eksportuj"
-                                   Icon="\Resources\Images\export_64.png"
-                                   LargeIcon="\Resources\Images\export_64.png" />
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Informacje">
-                    <Fluent:Button x:Name="About"
-                                   Header="O aplikacji"
-                                   Icon="\Resources\Images\about.png"
-                                   LargeIcon="\Resources\Images\about.png" />
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
+                <!--            Tabs-->
+                <Fluent:RibbonTabItem Header="Gra">
+                    <Fluent:RibbonGroupBox Header="Sterowanie">
+                        <Fluent:Button x:Name="Start"
+                                       Visibility="{Binding StartVisibility}"
+                                       Header="Start"
+                                       Icon="\Resources\Images\play_64.png"
+                                       LargeIcon="\Resources\Images\play_64.png" />
+                        <Fluent:Button Header="Stop"
+                                       Visibility="{Binding StopVisibility}"
+                                       Icon="\Resources\Images\stop_64.png"
+                                       LargeIcon="\Resources\Images\stop_64.png"
+                                       x:Name="Stop" />
+                        <Fluent:Button Header="Nastepny"
+                                       Icon="\Resources\Images\forward_64.png"
+                                       LargeIcon="\Resources\Images\forward_64.png"
+                                       x:Name="NextGeneration" />
+                        <Fluent:Button x:Name="Reset"
+                                       Header="Reset"
+                                       Icon="\Resources\Images\reset_64.png"
+                                       LargeIcon="\Resources\Images\reset_64.png" />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Import / Eksport">
+                        <Fluent:Button x:Name="Import"
+                                       Header="Importuj"
+                                       Icon="\Resources\Images\import_64.png"
+                                       LargeIcon="\Resources\Images\import_64.png" />
+                        <Fluent:Button x:Name="Export"
+                                       Header="Eksportuj"
+                                       Icon="\Resources\Images\export_64.png"
+                                       LargeIcon="\Resources\Images\export_64.png" />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Informacje">
+                        <Fluent:Button x:Name="About"
+                                       Header="O aplikacji"
+                                       Icon="\Resources\Images\about.png"
+                                       LargeIcon="\Resources\Images\about.png" />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Przykłady">
+                        <Fluent:Button x:Name="GliderGun"
+                                       Header="Glider Gun"
+                                       Icon="\Resources\Images\glider.png"
+                                       LargeIcon="\Resources\Images\glider.png" />
+                        <Fluent:Button x:Name="Benchmark1"
+                                       Header="Benchmark Test"
+                                       Icon="\Resources\Images\benchmark.png"
+                                       LargeIcon="\Resources\Images\benchmark.png" />
+                    </Fluent:RibbonGroupBox>
+
+                </Fluent:RibbonTabItem>
 
         </Fluent:Ribbon>
         <ContentControl Grid.Row="1" x:Name="ActiveItem" />
