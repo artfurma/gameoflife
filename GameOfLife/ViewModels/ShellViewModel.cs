@@ -32,7 +32,7 @@ namespace GameOfLife.ViewModels
 			}
 		}
 
-		private readonly IWindowManager _windowManager; 
+		private readonly IWindowManager _windowManager;
 		private IScreen activeSscreen;
 
 		public ShellViewModel(IWindowManager windowManager)
@@ -68,6 +68,36 @@ namespace GameOfLife.ViewModels
 			(activeSscreen as GameViewModel)?.Reset();
 			StopVisibility = Visibility.Collapsed;
 			StartVisibility = Visibility.Visible;
+		}
+
+		public void Import()
+		{
+			// TODO: 1. Zobaczyæ, co  jest nie tak z importem du¿ych mapek
+			// TODO: 2. Naprawiæ importowanie przed chwil¹ eksportowanej mapy
+
+			var dalog = new OpenFileDialog {Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*"};
+			if (dalog.ShowDialog() != true) return;
+			var gameMap = File.ReadAllLines(dalog.FileName);
+			(activeSscreen as GameViewModel)?.Import(gameMap);
+		}
+
+		public void Export()
+		{
+			var dialog = new SaveFileDialog
+			{
+				Filter = "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki(*.*)|*.*",
+			};
+
+			if (dialog.ShowDialog() == true)
+			{
+				var exportedMap = (activeSscreen as GameViewModel)?.Export();
+				File.WriteAllText(dialog.FileName, exportedMap);
+			}
+		}
+
+		public void About()
+		{
+			_windowManager.ShowDialog(IoC.Get<AboutViewModel>());
 		}
 	}
 }

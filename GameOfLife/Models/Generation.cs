@@ -23,7 +23,6 @@ namespace GameOfLife.Models
 			Rows = rows;
 			Columns = columns;
 			_cells = cells;
-			InitCells();
 		}
 
 		private void InitCells()

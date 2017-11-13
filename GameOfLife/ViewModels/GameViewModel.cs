@@ -262,18 +262,18 @@ namespace GameOfLife.ViewModels
 			return _gameEngine.ActiveGeneration.ToString();
 		}
 
-		public async void ResizeGameMap()
+		public void ResizeGameMap()
 		{
 			var newRows = 1 * CurrentSize;
 			var newColumns = 2 * CurrentSize;
 
-			await Task.Run(() =>
-			{
+//			await Task.Run(() =>
+//			{
 				var generation = new Generation(newRows, newColumns);
 				_gameEngine.ImportGeneration(generation);
 				GameRows = newRows;
 				GameColumns = newColumns;
-			});
+//			});
 
 			Stop();
 		}

@@ -36,6 +36,7 @@ namespace GameOfLife
 			//			container.PerRequest<IScreen, GameViewModel>();
 			container.PerRequest<IShell, ShellViewModel>();
 			container.Singleton<GameViewModel>();
+			container.PerRequest<AboutViewModel>();
 
 			BindingScope.AddChildResolver<Fluent.Ribbon>(FluentRibbonChildResolver);
 
