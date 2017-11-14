@@ -33,6 +33,7 @@ namespace GameOfLife.ViewModels
 		private int _underpopulationRule;
 		private int _overpopulationRule;
 		private int _birthRule;
+		private int _step;
 
 		private SolidColorBrush _aliveColor;
 		private SolidColorBrush _deadColor;
@@ -202,6 +203,16 @@ namespace GameOfLife.ViewModels
 			}
 		}
 
+		public int Step
+		{
+			get => _step;
+			set
+			{
+				_step = value;
+				NotifyOfPropertyChange(() => Step);
+			}
+		}
+
 		#endregion
 
 		#region Commands
@@ -232,12 +243,14 @@ namespace GameOfLife.ViewModels
 			_maxSpeed = 120;
 			CurrentSpeed = 50;
 			CurrentSize = 20;
+			Step = 1;
 			ResetTheme();
 		}
 
 		public void NextGeneration()
 		{
-			_gameEngine.NextGeneration();
+			for (var i = 0; i < Step; i++)
+				_gameEngine.NextGeneration();
 			CurrentGenerationNumber = _gameEngine.GenerationNumber;
 		}
 

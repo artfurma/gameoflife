@@ -43,6 +43,12 @@
                                    Header="Reset"
                                    Icon="\Resources\Images\reset_64.png"
                                    LargeIcon="\Resources\Images\reset_64.png" />
+                    <Fluent:Spinner KeyTip="PK"
+                                    Value="{Binding Step}"
+                                    InputWidth="50"
+                                    Format="0"
+                                    Header="Wielkość kroku:"
+                                    IsEnabled="True" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Import / Eksport">
                     <Fluent:Button x:Name="Import"

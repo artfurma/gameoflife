@@ -13,6 +13,7 @@ namespace GameOfLife.ViewModels
 		private int _underpopulationRule;
 		private int _overpopulationRule;
 		private int _birthRule;
+		private int _step;
 
 		public Visibility StartVisibility
 		{
@@ -69,6 +70,17 @@ namespace GameOfLife.ViewModels
 			}
 		}
 
+		public int Step
+		{
+			get => _step;
+			set
+			{
+				_step = value;
+				((GameViewModel) activeSscreen).Step = Step;
+				NotifyOfPropertyChange(() => Step);
+			}
+		}
+
 		private readonly IWindowManager _windowManager;
 		private IScreen activeSscreen;
 
@@ -82,6 +94,7 @@ namespace GameOfLife.ViewModels
 			UnderpopulationRule = 2;
 			OverpopulationRule = 3;
 			BirthRule = 3;
+			Step = 1;
 		}
 
 		public void NextGeneration()
@@ -111,6 +124,7 @@ namespace GameOfLife.ViewModels
 			UnderpopulationRule = 2;
 			OverpopulationRule = 3;
 			BirthRule = 3;
+			Step = 1;
 		}
 
 		public void Import()
